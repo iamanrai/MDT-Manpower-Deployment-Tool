@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/signup.css') }}"
+    />
+</head>
+<body>
+  <header class="head">
+    <img
+      src="{{ url_for('static',filename='images/flipkartlogo.png') }}"
+      alt="Flipkart Logo"
+    />
+    <h1>Manpower Deployment Tool</h1>
+</header>
+
+
+    <div class="section">
+      {% with messages = get_flashed_messages() %} {% if messages %} {% for
+        message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %} {% endif %} {% endwith %}
+        <div class="image"><img
+          src="{{ url_for('static',filename='images/hr.png') }}"
+          alt="Flipkart Logo"
+        /></div>
+        <div class="signup-form">
+            <h1 class="mr-b-20">Sign Up</h1>
+            {% if error %}
+              <div class="alert alert-danger" role="alert">{{ error }}</div>
+              {% endif %}
+            <form action="/signup/submit/" , method="post">
+                <div class="mr-b-20">
+                  <label for="username">Employee ID</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="userid"
+                    required
+                  />
+                </div>
+                <div class="mr-b-20">
+                  <label for="user_name">Employee Name:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="user_name"
+                    name="name"
+                    required
+                  />
+                </div>
+                <div class="mr-b-20">
+                    <label for="rights">Rights:</label>
+                    <select id="rights" name="rights" required>
+                        <option value="" disabled selected>Select your gender</option>
+                        <option value="1">Standard</option>
+                        <option value="0">Admin</option>
+                    </select>
+                </div>
+                <div class="mr-b-20">
+                  <label for="location">Location</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="location"
+                    name="location"
+                    required
+                  />
+                </div>
+                <div class="mr-b-20">
+                  <label for="password">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required
+                  />
+                </div>
+                <button class="secondaryButton" type="submit">Signup</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

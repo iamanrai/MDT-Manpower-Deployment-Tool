@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/signup.css') }}"
+    />
+  </head>
+  <body>
+
+    <header class="head">
+        <img
+          src="{{ url_for('static',filename='images/flipkartlogo.png') }}"
+          alt="Flipkart Logo"
+        />
+        <h1>Manpower Deployment Tool</h1>
+    </header>
+
+    <div class="section">
+      {% with messages = get_flashed_messages() %} {% if messages %} {% for
+      message in messages %}
+      <p>{{ message }}</p>
+      {% endfor %} {% endif %} {% endwith %}
+      <div class="image">
+        <img
+          src="{{ url_for('static',filename='images/hr.png') }}"
+          alt="Flipkart Logo"
+        />
+      </div>
+      <div class="signup-form">
+        <h1 class="mr-b-20">Login</h1>
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+        <form action="/login/" , method="post">
+          <div class="mr-b-20">
+            <label for="username">Employee ID : </label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              name="userid"
+              required
+            />
+          </div>
+          <div class="mr-b-20">
+            <label for="password">Password : </label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              required
+            />
+          </div>
+
+          <button class="secondaryButton" type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,328 @@
+body {
+  font-family: "Roboto", sans-serif;
+  color: #0c0c0c;
+  background-color: #f1f7f6;
+  overflow-x: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  position: relative;
+}
+
+.head{
+  display: flex;
+  flex-direction: row;
+  background-color: #79C1DA;
+  width: 100%;
+  height: 13vh;
+  position: absolute;
+  /* left: 35%; */
+  align-items: center;
+  
+}
+
+.head h1{
+  font-weight: 600;
+  color: #F9E601;
+  font-size:5em;
+  text-align:center;
+  margin-left: 300px;
+  text-shadow: 0 -3px 0 #333,
+    0 6px 8px rgba(0, 0, 0, 0.4),
+    0 9px 10px rgba(0,0,0,.15),
+    0 9px 10px rgba(0,0,0,.18),
+    0 12px 10px rgba(0,0,0,.21);
+}
+
+.head img{
+  width: 4%;
+  object-fit: contain;
+  margin-left: 40px;
+  cursor: pointer;
+}
+
+.section{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding: 20px;
+  position: absolute;
+  top:200px;
+}
+
+.image{
+  display: flex;
+  flex-direction: column;
+}
+
+form{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-form {
+  width: 400px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+label {
+  display: flex;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+input {
+  width: 80%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+select{
+  width: 86%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button{
+  align-self: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li,
+table,
+td,
+th,
+button,
+a,
+p,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.primaryColor {
+  background-color: #00856F;
+}
+.secondaryColor {
+  background-color: #ffffff;
+}
+.tertiaryColor {
+  background-color: #252525;
+}
+.mr-4 {
+  margin: 4px;
+}
+.mr-8 {
+  margin: 8px;
+}
+.mr-16 {
+  margin: 16px;
+}
+.mr-20 {
+  margin: 20px;
+}
+.mr-r-4 {
+  margin-right: 4px;
+}
+.mr-r-8 {
+  margin-right: 8px;
+}
+.mr-r-16 {
+  margin-right: 16px;
+}
+.mr-r-20 {
+  margin-right: 20px;
+}
+.mr-l-4 {
+  margin-left: 4px;
+}
+.mr-l-8 {
+  margin-left: 8px;
+}
+.mr-l-16 {
+  margin-left: 16px;
+}
+.mr-l-20 {
+  margin-left: 20px;
+}
+.mr-l-80 {
+  margin-left: 80px;
+}
+.mr-t-4 {
+  margin-top: 4px;
+}
+.mr-t-8 {
+  margin-top: 8px;
+}
+.mr-t-16 {
+  margin-top: 16px;
+}
+.mr-t-20 {
+  margin-top: 20px;
+}
+.mr-b-4 {
+  margin-bottom: 4px;
+}
+.mr-b-8 {
+  margin-bottom: 8px;
+}
+.mr-b-16 {
+  margin-bottom: 16px;
+}
+.mr-b-20 {
+  margin-bottom: 20px;
+}
+
+.pd-4 {
+  padding: 4px;
+}
+.pd-8 {
+  padding: 8px;
+}
+.pd-16 {
+  padding: 16px;
+}
+.pd-20 {
+  padding: 20px;
+}
+.pd-r-4 {
+  padding-right: 4px;
+}
+.pd-r-8 {
+  padding-right: 8px;
+}
+.pd-r-16 {
+  padding-right: 16px;
+}
+.pd-r-20 {
+  padding-right: 20px;
+}
+.pd-l-4 {
+  padding-left: 4px;
+}
+.pd-l-8 {
+  padding-left: 8px;
+}
+.pd-l-16 {
+  padding-left: 16px;
+}
+.pd-l-20 {
+  padding-left: 20px;
+}
+.pd-t-4 {
+  padding-top: 4px;
+}
+.pd-t-8 {
+  padding-top: 8px;
+}
+.pd-t-16 {
+  padding-top: 16px;
+}
+.pd-t-20 {
+  padding-top: 20px;
+}
+.pd-t-40 {
+  padding-top: 40px;
+}
+.pd-b-4 {
+  padding-bottom: 4px;
+}
+.pd-b-8 {
+  padding-bottom: 8px;
+}
+.pd-b-16 {
+  padding-bottom: 16px;
+}
+.pd-b-20 {
+  padding-bottom: 20px;
+}
+
+.primaryButton{
+  width: 120px;
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  color: #00856f;
+  box-sizing: border-box;
+  outline: none;
+  border: 1px solid #00856f;
+}
+
+.primaryButton:hover{
+  color: #ffffff;
+  background-color: #00856f;
+}
+.secondaryButton{
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #00856F;
+  box-sizing: border-box;
+  outline: none;
+  border: 0;
+}
+
+.secondaryButton:hover{
+  color: #00856F;
+  background-color: #ffffff;
+  border: 1px solid #00856F;
+}
+
+.navBar {
+  height: 100px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+.navBar li {
+  margin-right: 60px;
+}
+
+.navBar li img{
+  width: 220px;
+  height: 110px;
+}
+
+.navbar li:last-child {
+  margin-right: 0; /* Remove margin for the last item */
+}
+
+a,
+a:hover,
+a:focus {
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+}
+
+a:hover,
+a:focus {
+  color: initial;
+}
+
+.clear-fix{
+  margin: 0px;
+  padding: 0px;
+}

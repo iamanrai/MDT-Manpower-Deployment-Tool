@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Page</title>
+    <!-- Add Bootstrap CSS link -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    
+    <style>
+      body {
+        background-color: rgb(121, 193, 218);
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      
+      .pd-3 {
+        padding: 3px;
+      }
+      .main_container {
+        position: relative;
+        top: 100px;
+      }
+      .title{
+        position: absolute;
+        font-size: 2em;
+        font-weight: 600;
+        text-align: center;
+        left: 40%;
+        font-family: Arial, sans-serif;
+      }
+      .secondaryButton{
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 5px;
+        cursor: pointer;
+        color: white;
+        background-color: #00856F;
+        box-sizing: border-box;
+        outline: none;
+        border: 0;;
+      }
+      
+      .secondaryButton:hover{
+        color: #00856F;
+        background-color: #ffffff;
+        border: 1px solid #00856F;
+      }
+      .head{
+        display: flex;
+        flex-direction: row;
+        background-color: white;
+        width: 100%;
+        height: 12vh;
+        align-items: center;
+        justify-content: space-around;
+      }
+      
+      .head h1{
+        font-weight: 600;
+        color: #F9E601;
+        font-size:5em;
+        text-align:center;
+        text-shadow: 0 -3px 0 #333,
+          0 6px 8px rgba(0,0,0,.4),
+          0 9px 10px rgba(0,0,0,.15),
+          0 9px 10px rgba(0,0,0,.18),
+          0 12px 10px rgba(0,0,0,.21);
+      }
+      
+      .head img{
+        width: 4%;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Bootstrap Navbar
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/logout/">
+        <img
+          src="{{ url_for('static',filename='images/flipkartlogo.png') }}"
+          alt="Flipkart Logo"
+          height="40px"
+          width="40px"
+        />
+      </a>
+      <span class="title"> Manpower Deployment Tool </span>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item btn_1">
+          <a class="nav-link" href="/signup/">Signup</a>
+        </li>
+      </ul>
+    </nav> -->
+
+    <header class="head">
+      <img
+        src="{{ url_for('static',filename='images/flipkartlogo.png') }}"
+        alt="Flipkart Logo"
+        onclick="logOutPage()"
+      />
+      <h1>Manpower Deployment Tool</h1>
+
+      <button class = "secondaryButton" onclick="loadPage()">Sign Up</button>
+
+      
+  </header>
+
+
+    <div class="container mt-5 main_container">
+      {% with messages = get_flashed_messages() %} {% if messages %} {% for
+      message in messages %}
+      <p>{{ message }}</p>
+      {% endfor %} {% endif %} {% endwith %}
+      <h1>Welcome to the Admin Page!</h1>
+      <form
+        action="{{ url_for('admin_home') }}"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <label for="document1">Upload FE AOP Sheet:</label>
+          <input
+            type="file"
+            class="form-control pd-3"
+            id="document1"
+            name="file1"
+            accept=".csv"
+            required
+          /> <span>Previous data will be flushed when you upload new file</span>
+        </div>
+        <div class="form-group">
+          <label for="document2">Upload Density Mix Sheet:</label>
+          <input
+            type="file"
+            class="form-control pd-3"
+            id="document2"
+            name="file2"
+            accept=".csv"
+            required
+          /> <span>Previous data will be flushed when you upload new file</span>
+        </div>
+        <div class="form-group">
+          <label for="document3">Upload Active Head Count Sheet:</label>
+          <input
+            type="file"
+            class="form-control pd-3" 
+            id="document3"
+            name="file3"
+            accept=".csv"
+          /> <span>Previous data will be flushed when you upload new file</span>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Upload" />
+      </form>
+    </div>
+
+    <!-- Add Bootstrap JS and jQuery links -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      function loadPage(){
+        window.location= "/signup/";
+      }
+      function logOutPage(){
+        window.location= "/signup/";
+      }
+    </script>
+  </body>
+</html>
