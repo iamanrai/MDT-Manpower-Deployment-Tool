@@ -5,6 +5,9 @@ import traceback
 import pandas as pd
 import models
 import utils
+import json
+import requests
+from sqlalchemy import delete
 from database import Session, eng, Base
 from passlib.hash import sha256_crypt
 from flask_login import login_user, login_required, UserMixin, current_user, logout_user, LoginManager
@@ -17,7 +20,6 @@ login_manager.login_view = 'login'
 login_manager.init_app(app)
 
 app.config['SECRET_KEY'] = 'abcd'
-
 
 @login_manager.user_loader
 def load_user(userid):
@@ -155,6 +157,12 @@ def admin_home(db=Session()):
 
             activeheadcount_data = df3.to_dict(orient='records')
             
+            db.execute(delete(models.AOP))
+            db.execute(delete(models.DensityMix))
+            db.execute(delete(models.ActiveHeadCount))
+            db.execute(delete(models.ActiveHeadCountBifrication))
+            
+            
             db.bulk_insert_mappings(AOP, aop_data)
             db.bulk_insert_mappings(DensityMix, densitymix_data)
             db.bulk_insert_mappings(ActiveHeadCount, activeheadcount_data)
@@ -175,7 +183,6 @@ def admin_home(db=Session()):
 # @login_required
 def standard_home():
     return render_template("standard_home.html", userid=current_user)
-
 
 @app.route("/login/", methods=['GET', 'POST'])
 def login(db=Session()):
@@ -203,7 +210,7 @@ def login(db=Session()):
                 hub_data = db.query(models.AOP).all()
                 db.close()
                 user_type_map = {0: "Admin", 1: "Standard"}
-                return render_template("standard_home.html", is_aop_data=False, users=b_users, user_type_map=user_type_map, data=hub_data)
+                return render_template("standard_home.html", is_aop_data=False, users=b_users, user_type_map=user_type_map, data=hub_data, active_head=False)
 
                 # return redirect(url_for("standard_home"))
         else:
@@ -231,14 +238,18 @@ def fetch_aop(db=Session()):
 
         # fetch_int = bool(int(is_int))
 
-        res = utils.calculate_count(db_aop.aop_count, db_density_mix.uhd,
+        aop_count = utils.calculate_count(db_aop.aop_count, db_density_mix.uhd,
                                     db_density_mix.high, db_density_mix.medium, db_density_mix.low,)
         
-        res2 = (db_active_head.uhd, db_active_head.high, db_active_head.medium, db_active_head.low)
+        active_head = (db_active_head.uhd, db_active_head.high, db_active_head.medium, db_active_head.low)
         
-        res3 = utils.slot_left(res,db_active_head.uhd, db_active_head.high, db_active_head.medium, db_active_head.low)
+        slot_left = utils.slot_left(aop_count,db_active_head.uhd, db_active_head.high, db_active_head.medium, db_active_head.low)
 
-        return render_template("standard_home.html", data=res, data2 = res2, data3 = res3, is_aop_data=True, is_active_head=True)
+        return {"aop_count":aop_count,
+                "active_head":active_head,
+                "slot_left":slot_left}
+        
+        # return render_template("standard_home.html", data=res, data2 = res2, data3 = res3, is_aop_data=False, is_active_head=True)
         
 
     except Exception as err:
@@ -246,36 +257,73 @@ def fetch_aop(db=Session()):
         db.close()
         return {"detail": str(err)}, 400
 
-@app.route('/update-active-count/', methods=['POST'])
-def update_active_count(db=Session()):
+@app.route('/aux-aop/<hub_name>/')
+def aux_aop(hub_name):
+    db=Session()
     try:
-        data = request.json
-        hub_name = data.get('hubName')
-        model = data.get('model')
-        username = data.get('username')
-        casper_id = data.get('casperId')
-        rate = data.get('rate')
+        # hub_name = request.form.get('hub_name')
+        # is_int = request.form.get("is_int")
+        db_aop = db.query(models.AOP).filter(
+            models.AOP.loc_name == hub_name).first()
+        db_density_mix = db.query(models.DensityMix).filter(
+            models.DensityMix.loc_name == hub_name).first()
+        db_active_head = db.query(models.ActiveHeadCountBifrication).filter(models.ActiveHeadCountBifrication.loc_name == hub_name).first()
+        db.close()
+        if db_density_mix is None:
+            return {"detail": f"Data not found for {hub_name}"}, 404
 
-        # Retrieve the location based on the hub_name
-        location = db.query(models.AOP).filter_by(loc_name=hub_name).first()
-        
-        # Update the activeheadcount table here
-        active_head_count = db.query(models.ActiveHeadCount).filter_by(loc_name=location).first()
-        
-        # Update the count for the selected model
-        setattr(active_head_count, model, getattr(active_head_count, model) + 1)
-        
-        db.commit()
+        # fetch_int = bool(int(is_int))
 
-        response_data = {'message': 'Active count updated successfully.'}
-        return render_template("standard_home.html")
+        res = utils.calculate_count(db_aop.aop_count, db_density_mix.uhd,
+                                    db_density_mix.high, db_density_mix.medium, db_density_mix.low,True)
         
-        return jsonify(response_data)
+        res2 = [int(i) for i in (db_active_head.uhd, db_active_head.high, db_active_head.medium, db_active_head.low)]
+        
+        res3 = utils.slot_left(res,db_active_head.uhd, db_active_head.high, db_active_head.medium, db_active_head.low)
+
+        hub_data = db.query(models.AOP).all()
+        
+        return render_template("standard_home.html", data1=res, data2 = res2, data3 = res3, is_aop_data=False, active_head=True, data = hub_data)
+        
+
     except Exception as err:
         traceback.print_exc()
-        db.rollback()
-        return {'detail': str(err)}, 400
+        db.close()
+        return {"detail": str(err)}, 400
 
+@app.route('/update-active-count/', methods=['GET','POST'])
+def update_active_count(db=Session()):
+    
+    hub_name = request.form.get('hub_name')
+    model = request.form.get('model')
+
+    density_model = utils.get_bifercation_value(model)
+
+    username = request.form.get('username')
+    casper_id = request.form.get('casperId')
+    rate = request.form.get('rate')
+    
+    # Retrieve the location based on the hub_name
+    location = db.query(models.AOP).filter_by(loc_name=hub_name).first()
+    
+    # Update the activeheadcount table here
+    active_head_count = db.query(models.ActiveHeadCount).filter_by(loc_name=location.loc_name).first()
+    
+    active_head_bifercate = db.query(models.ActiveHeadCountBifrication).filter(models.ActiveHeadCountBifrication.loc_name == location.loc_name).first()
+
+    updated_value_ahcb = getattr(active_head_bifercate, density_model)
+    setattr(active_head_bifercate, density_model, int(updated_value_ahcb)+1)
+
+    # Update the count for the selected model
+    updated_value = getattr(active_head_count, model)
+    setattr(active_head_count, model, int(updated_value)+1)
+
+    db.commit()
+    reqs_data = {"hub_name":hub_name}
+    data = reqs_data["hub_name"]
+    print("-------------------------------------------------------------------")
+    print(data)
+    return redirect(f'/aux-aop/{data}/')
 
 
 if __name__ == "__main__":
