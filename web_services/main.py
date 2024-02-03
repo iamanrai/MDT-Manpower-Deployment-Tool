@@ -300,8 +300,8 @@ def update_active_count(db=Session()):
     density_model = utils.get_bifercation_value(model)
 
     username = request.form.get('username')
-    casper_id = request.form.get('casperId')
-    rate = request.form.get('rate')
+    pan_no = request.form.get('pan_no')
+    #rate = request.form.get('rate')
     
     # Retrieve the location based on the hub_name
     location = db.query(models.AOP).filter_by(loc_name=hub_name).first()
